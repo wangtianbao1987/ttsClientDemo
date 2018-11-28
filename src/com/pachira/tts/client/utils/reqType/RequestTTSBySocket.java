@@ -32,7 +32,6 @@ public abstract class RequestTTSBySocket extends RequestTTS {
 	
 	public String map2Json() {
 		type = 2;
-		System.out.println("[注]在1.2.1版本以后, 传递参数支持json串的形式，此时请求方式必须为POST");
 		return ReqParam.param_json;
 	}
 	
@@ -63,8 +62,13 @@ public abstract class RequestTTSBySocket extends RequestTTS {
 			}
 			
 			osw = new OutputStreamWriter(socket.getOutputStream(),"utf-8");
-//			String paramStr = paramDec();
-			String paramStr = map2Json();
+			String paramStr = null;
+			if("GET".equals(method)) {
+				paramStr = paramDec();
+			}else {
+				System.out.println("1.2.1版本以后, POST方式传递参数支持json串的形式，body体内容编码为UTF-8");
+				paramStr = map2Json();
+			}
 			System.out.println("==========================HTTP请求报文============================");
 			
 			StringBuffer sb = new StringBuffer();
@@ -97,6 +101,7 @@ public abstract class RequestTTSBySocket extends RequestTTS {
 				reqErr("请求失败："+len);
 				return;
 			}
+			System.out.println(len);
 			String contentType = "";
 			int contentLength = 0;
 			while(!"".equals(len=readLine(in))) {
@@ -134,9 +139,9 @@ public abstract class RequestTTSBySocket extends RequestTTS {
 					}
 				}
 				System.out.println(len);
-				
-				reqErr(errJson);
-				
+				if(!"".equals(errJson)) {
+					reqErr(errJson);
+				}
 				// 流读取结束
 				endManage();
 			}else {
