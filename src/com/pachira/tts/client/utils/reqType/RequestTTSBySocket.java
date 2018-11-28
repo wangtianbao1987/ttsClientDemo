@@ -67,6 +67,7 @@ public abstract class RequestTTSBySocket extends RequestTTS {
 				paramStr = paramDec();
 			}else {
 				System.out.println("1.2.1版本以后, POST方式传递参数支持json串的形式，body体内容编码为UTF-8");
+//				paramStr = paramDec();
 				paramStr = map2Json();
 			}
 			System.out.println("==========================HTTP请求报文============================");
