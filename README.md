@@ -1,5 +1,5 @@
+![image](https://raw.githubusercontent.com/wangtianbao1987/ttsClientDemo/master/pachira.png)
 ## 普强TTS接口调用演示实例说明
-
 ### 运行入口
 * com.pachira.tts.client.Main
 ### 参数配置类
@@ -153,5 +153,9 @@ Date: Wed, 28 Nov 2018 13:33:55 GMT
 0
 ```
 
-
+* 调用过程中遇到问题可联系我：
+```
+QQ：    836369864
+微信：  wang_tianbao1987
+```
 
