@@ -1,5 +1,10 @@
 package com.pachira.tts.client;
 
+import com.pachira.tts.client.utils.ManageData;
+import com.pachira.tts.client.utils.RequestTTS;
+import com.pachira.tts.client.utils.common.Utils;
+import com.pachira.tts.client.utils.reqType.RequestTTSByHttpClient;
+import com.pachira.tts.client.utils.reqType.RequestTTSBySocket;
 import com.pachira.tts.client.utils.voice.DownloadManager;
 import com.pachira.tts.client.utils.voice.PcmManager;
 import com.pachira.tts.client.utils.voice.WavManager;
@@ -20,6 +25,8 @@ import com.pachira.tts.client.utils.voice.WavManager;
 public class Main {
 	
 	public static void main(String[] args) {
+		// 演示的 voice项目 版本号
+		String version = "1.2.1";
 		// HTTP请求方式：POST/GET
 		String method = "POST";
 		// 测试使用。 play:播放；    download:下载
@@ -28,35 +35,31 @@ public class Main {
 		// 1.2.1版本后，使用socket可以将合成过程中出现的错误信息打印出来；使用httpClient暂不支持打印错误信息。
 		String demoType = "socket";
 		
-		if("socket".equals(demoType)) {
-			if("play".equals(playOrDownload)) {
-				// 播放音频
-				if ("pcm".equals(ReqParam.format)) {
-					// 播放PCM格式的TTS（流式播放）
-					PcmManager.getRequestTTSBySocket(method).connection();
-				}else if("wav".equals(ReqParam.format)) {
-					// 播放WAV
-					WavManager.getRequestTTSBySocket(method).connection();
-				}
-			}else if("download".equals(playOrDownload)) {
-				// 下载PCM/WAV
-				DownloadManager.getRequestTTSBySocket(method).connection();
+		RequestTTS reqTTS = null;
+		ManageData manage = null;
+		
+		// 确定使用的数据处理的类(manageData)
+		if("play".equals(playOrDownload)) {
+			if ("pcm".equals(ReqParam.format)) {
+				manage = new PcmManager();
+			}else if("wav".equals(ReqParam.format)) {
+				manage = new WavManager();
 			}
-		}else if("httpClient".equals(demoType)) {
-			if("play".equals(playOrDownload)) {
-				// 播放音频
-				if ("pcm".equals(ReqParam.format)) {
-					// 播放PCM格式的TTS（流式播放）
-					PcmManager.getRequestTTSByHttpClient(method).connection();
-				}else if("wav".equals(ReqParam.format)) {
-					// 播放WAV
-					WavManager.getRequestTTSByHttpClient(method).connection();
-				}
-			}else if("download".equals(playOrDownload)) {
-				// 下载PCM/WAV
-				DownloadManager.getRequestTTSByHttpClient(method).connection();
-			}
+		}else if("download".equals(playOrDownload)) {
+			manage = new DownloadManager();
 		}
+		
+		// 确定请求HTTP使用的方式(reqTTS)
+		if("socket".equals(demoType)) {
+			int versionVal = Utils.getVersionVal(version);
+			reqTTS = new RequestTTSBySocket(versionVal, method, manage);
+		}else if("httpClient".equals(demoType)) {
+			reqTTS = new RequestTTSByHttpClient(method, manage);
+		}
+		
+		//调用connection请求http并处理吧
+		reqTTS.connection();
+		
 		
 	}
 }

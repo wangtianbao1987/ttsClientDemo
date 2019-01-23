@@ -1,16 +1,16 @@
-package com.pachira.tts.client;
+package com.pachira.tts.http.client;
 
 import java.net.URLEncoder;
 import java.util.HashMap;
 import java.util.Map;
 
 public class ReqParam {
-	public static String url = "http://172.22.144.127:8080/voice/tts";
-	public static String downloadDir = "/root/桌面/789";
+	public static String url = "http://172.22.144.138:88/voice/tts";
+	public static String downloadDir = "C:\\Users\\Administrator\\Desktop\\ttsdata";
 	public static Map<String,String> param = new HashMap<String,String>();
 	public static String param_json = "";
 	public static String param_form = "";
-
+	
 	public static String text = "秋风用时光的旋律，用桂花的芬芳、苹果的馨香、菊花的灿烂、牵牛花的奔放、一串红的艳丽，"
 			+ "把一望无际的田野乡村，演绎得在自然中沉醉，渲染得天地间空旷而又阳刚。"
 			+ "酷热的夏天刚刚过去，秋风吹来，秋牵着一个个节气的手，舞动着长袖，用婀娜多姿的舞姿，用变幻神奇的旋律，动听的音符，"
@@ -23,6 +23,9 @@ public class ReqParam {
 			+ "吹得舒展酣畅。连多情的小鸟也不愿在花丛打滚，嘴馋的小羊也不忍心张口去啃。特别是那漫山遍野的山丹丹花，把天空的云彩的染得霞光满天。"
 			+ "阵阵清香，优雅而芬芳，把那躲在暗处的萤火虫，引得打着灯笼，在山野荒原中游来游去。"
 			+ "特别是那一株株菊花，顶住尘土的飞扬，忍得住周边花朵凋谢的寂寞，耐得住干旱的折磨，在秋风中不顾寂寞和冷落暗自开放。";
+	static {
+		text = "Hello,你好";
+	}
 	// 请求参数：音量(取值范围0.5~2默认为1)
 	public static String volume = "1";
 	// 请求参数：语速(取值范围0.5~2默认为1)

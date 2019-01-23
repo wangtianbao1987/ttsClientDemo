@@ -1,0 +1,1 @@
+wsimport -encoding UTF-8 -s F:\git\ttsClientDemo\src -p com.pachira.tts.ws.client -keep http://172.22.144.127:8080/voice/ws/wstts?wsdl
