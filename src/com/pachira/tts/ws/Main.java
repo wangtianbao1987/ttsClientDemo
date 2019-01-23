@@ -56,6 +56,12 @@ public class Main {
 	 * 删除人声音频
 	 */
 	public static void deleteWav(String wavName) {
+		/**
+		 * com.pachira.tts.ws.client.VoiceInterface.deleteWav(String wavName, String language)
+		 * 参数说明：
+		 * 		wavName: 需要删除的人声音频
+		 * 		language： 语言包（默认为：putonghua）
+		 */
 		MyResp resp = face.deleteWav(wavName, "putonghua"); // <=> face.deleteWav(wavName, null);
 		System.out.println(toMyRespStr(resp));
 	}
@@ -77,6 +83,14 @@ public class Main {
 		String wavName = "webservice测试.wav";;
 		String language = "putonghua";
 		boolean isOverwrite = true;
+		/**
+		 * com.pachira.tts.ws.client.VoiceInterface.uploadWav(List<byte[]> datas,String wavName,String language,boolean isOverwrite)
+		 * 参数说明：
+		 * 		datas:			需要上传的音频数据
+		 * 		wavName:		音频名称
+		 * 		language：		语言包（默认为：putonghua）
+		 * 		isOverwrite：	如果音频名称已存在，是否覆盖
+		 */
 		MyResp resp = face.uploadWav(datas, wavName, language, isOverwrite); // <=> face.uploadWav(datas, wavName, null, isOverwrite);
 		System.out.println(toMyRespStr(resp));
 	}
@@ -101,6 +115,14 @@ public class Main {
 			mybytes.add(mybyte);
 		}
 		fis.close();
+		/**
+		 * com.pachira.tts.ws.client.VoiceInterface.uploadWavByMybyte(List<MyByte> mybytes,String wavName,String language,boolean isOverwrite)
+		 * 参数说明：
+		 * 		mybytes:		需要上传的音频数据封装对象
+		 * 		wavName:		音频名称
+		 * 		language：		语言包（默认为：putonghua）
+		 * 		isOverwrite：	如果音频名称已存在，是否覆盖
+		 */
 		MyResp resp = face.uploadWavByMybyte(mybytes, wavName, language, isOverwrite); // <=> face.uploadWavByMybyte(mybytes, wavName, null, isOverwrite);
 		System.out.println(toMyRespStr(resp));
 	}
@@ -109,6 +131,12 @@ public class Main {
 	 * 检查人声音频是否存在
 	 */
 	public static void checkName() {
+		/**
+		 * com.pachira.tts.ws.client.VoiceInterface.checkWavName(String wavName,String language)
+		 * 参数说明：
+		 * 		wavName:		音频名称
+		 * 		language：		语言包（默认为：putonghua）
+		 */
 		MyResp resp = face.checkWavName("123/2222.wav", "putonghua"); // <=> face.checkWavName("123/2222.wav", null);
 		System.out.println(toMyRespStr(resp));
 	}
@@ -116,6 +144,11 @@ public class Main {
 	 * 获取已上传人声音频列表
 	 */
 	public static void getWavNames() {
+		/**
+		 * com.pachira.tts.ws.client.VoiceInterface.getWavNames(String language)
+		 * 参数说明：
+		 * 		language：		语言包（默认为：putonghua）
+		 */
 		MyResp resp = face.getWavNames("putonghua"); // <=> face.getWavNames(null);
 		System.out.println(toMyRespStr(resp));
 	}
@@ -151,6 +184,11 @@ public class Main {
 		ttsParam.setEngMode(Param.engMode.auto);
 		// 语言标志（默认：普通话）
 		ttsParam.setLanguage(Param.language.zhCmn);
+		/**
+		 * com.pachira.tts.ws.client.VoiceInterface.synthesizeText(TtsParam param)
+		 * 参数说明：
+		 * 		param：		TTS参数封装对象
+		 */
 		TtsResponse res = face.synthesizeText(ttsParam);
 		if("0000".equals(res.getErrNo())) {
 			// TTS请求成功
