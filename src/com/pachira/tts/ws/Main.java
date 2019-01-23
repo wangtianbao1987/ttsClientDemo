@@ -19,6 +19,14 @@ import com.pachira.tts.ws.client.VoiceInterface;
 import com.pachira.tts.ws.client.VoiceInterfaceService;
 import com.pachira.tts.ws.utils.Param;
 
+/**
+ * WebService 客户端调用实例
+ * @author	王添宝
+ * @date	2019年1月23日
+ * 
+ * 注：客户端生成命令：
+ * wsimport -encoding UTF-8 -s F:\git\ttsClientDemo\src -p com.pachira.tts.ws.client -keep http://172.22.144.127:8080/voice/ws/wstts?wsdl
+ */
 public class Main {
 	private static VoiceInterface face;
 	private static void init() throws Exception {
