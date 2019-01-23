@@ -30,17 +30,17 @@ public class Main {
 		System.out.println("start");
 		init();
 		tts();
-		getVersion();
-		getWavNames();
-		checkName();
-		uploadWav();
-		getWavNames();
-		deleteWav("webservice测试.wav");
-		getWavNames();
-		uploadWavByMybyte();
-		getWavNames();
-		deleteWav("aaa/bbb/ccc/webservice测试.wav");
-		getWavNames();
+//		getVersion();
+//		getWavNames();
+//		checkName();
+//		uploadWav();
+//		getWavNames();
+//		deleteWav("webservice测试.wav");
+//		getWavNames();
+//		uploadWavByMybyte();
+//		getWavNames();
+//		deleteWav("aaa/bbb/ccc/webservice测试.wav");
+//		getWavNames();
 		System.out.println("end");
 	}
 	
@@ -48,7 +48,7 @@ public class Main {
 	 * 删除人声音频
 	 */
 	public static void deleteWav(String wavName) {
-		MyResp resp = face.deleteWav(wavName, "putonghua");
+		MyResp resp = face.deleteWav(wavName, "putonghua"); // <=> face.deleteWav(wavName, null);
 		System.out.println(toMyRespStr(resp));
 	}
 	
@@ -69,7 +69,7 @@ public class Main {
 		String wavName = "webservice测试.wav";;
 		String language = "putonghua";
 		boolean isOverwrite = true;
-		MyResp resp = face.uploadWav(datas, wavName, language, isOverwrite);
+		MyResp resp = face.uploadWav(datas, wavName, language, isOverwrite); // <=> face.uploadWav(datas, wavName, null, isOverwrite);
 		System.out.println(toMyRespStr(resp));
 	}
 	
@@ -93,7 +93,7 @@ public class Main {
 			mybytes.add(mybyte);
 		}
 		fis.close();
-		MyResp resp = face.uploadWavByMybyte(mybytes, wavName, language, isOverwrite);
+		MyResp resp = face.uploadWavByMybyte(mybytes, wavName, language, isOverwrite); // <=> face.uploadWavByMybyte(mybytes, wavName, null, isOverwrite);
 		System.out.println(toMyRespStr(resp));
 	}
 	
@@ -101,14 +101,14 @@ public class Main {
 	 * 检查人声音频是否存在
 	 */
 	public static void checkName() {
-		MyResp resp = face.checkWavName("123/2222.wav", "putonghua");
+		MyResp resp = face.checkWavName("123/2222.wav", "putonghua"); // <=> face.checkWavName("123/2222.wav", null);
 		System.out.println(toMyRespStr(resp));
 	}
 	/**
 	 * 获取已上传人声音频列表
 	 */
 	public static void getWavNames() {
-		MyResp resp = face.getWavNames("putonghua");
+		MyResp resp = face.getWavNames("putonghua"); // <=> face.getWavNames(null);
 		System.out.println(toMyRespStr(resp));
 	}
 	/**
@@ -123,9 +123,26 @@ public class Main {
 	 */
 	public static void tts() throws Exception {
 		TtsParam ttsParam = new TtsParam();
+		// TTS文本
 		ttsParam.setText("你好,很高兴见到你。请问你叫什么名字？");
-		ttsParam.setFormat(Param.format.wav);
+		// 音量（默认：1，取值范围0.5-2）
+		ttsParam.setVolume(1D);
+		// 语速（默认：1，取值范围0.5-2）
+		ttsParam.setSpeed(1D);
+		// 音调（默认：1，取值范围0.5-2）
+		ttsParam.setPitch(1D);
+		// 发音人（默认：xiaochang）
 		ttsParam.setVoiceName(Param.voiceName.xiaochang);
+		// 音频格式（默认：pcm）
+		ttsParam.setFormat(Param.format.wav);
+		// 采样率（默认：16000）
+		ttsParam.setSampleRate(Param.sampleRate._16K);
+		// 使用使用SSML标记（默认：使用）
+		ttsParam.setTagMode(Param.tagMode.ssml);
+		// 英文读法（默认：自动判断）
+		ttsParam.setEngMode(Param.engMode.auto);
+		// 语言标志（默认：普通话）
+		ttsParam.setLanguage(Param.language.zhCmn);
 		TtsResponse res = face.synthesizeText(ttsParam);
 		if("0000".equals(res.getErrNo())) {
 			// TTS请求成功
