@@ -8,18 +8,23 @@ import org.apache.http.HttpResponse;
 import org.apache.http.util.EntityUtils;
 
 import com.pachira.tts.http.client.ReqParam;
-import com.pachira.tts.http.client.utils.HttpUtils;
+import com.pachira.tts.http.client.utils.ManageData;
 import com.pachira.tts.http.client.utils.RequestTTS;
-import com.pachira.tts.http.client.utils.SourceUtils;
-import com.pachira.tts.http.client.utils.Utils;
-
-public abstract class RequestTTSByHttpClient extends RequestTTS {
+import com.pachira.tts.http.client.utils.common.HttpUtils;
+import com.pachira.tts.http.client.utils.common.SourceUtils;
+import com.pachira.tts.http.client.utils.common.Utils;
+/**
+ * 实现使用HttpClient工具类发送HTTP请求.
+ */
+public class RequestTTSByHttpClient implements RequestTTS {
 	private String method;
+	private ManageData manage;
 	/**
 	 * HttpClient方式请求TTS服务
 	 */
-	public RequestTTSByHttpClient(String method) {
+	public RequestTTSByHttpClient(String method,ManageData manage) {
 		this.method = method;
+		this.manage = manage;
 	}
 	/**
 	 * 通过HttpClient请求TTS接口
@@ -39,21 +44,21 @@ public abstract class RequestTTSByHttpClient extends RequestTTS {
 			HttpEntity httpEntity = resp.getEntity();
 			if(contentType.startsWith("audio")) {
 				if (httpEntity != null) {
-					preManage();
+					manage.preManage();
 					in = httpEntity.getContent();
 					int bufferSize = 512;
 					byte[] buff = new byte[bufferSize];
 					int len = 0;
 					while ((len = in.read(buff)) != -1) {
-						manage(buff, len);
+						manage.manage(buff, len);
 					}
-					endManage();
+					manage.endManage();
 				}else {
-					reqErr("无返回数据");
+					manage.reqErr("无返回数据");
 				}
 			}else {
 				byte[] buff = EntityUtils.toByteArray(httpEntity);
-				reqErr(new String(buff,"UTF-8"));
+				manage.reqErr(new String(buff,"UTF-8"));
 			}
 		} catch (Exception ee) {
 			ee.printStackTrace();
@@ -63,25 +68,4 @@ public abstract class RequestTTSByHttpClient extends RequestTTS {
 			SourceUtils.close(in);
 		}
 	}
-	
-	/**
-	 * 获取响应数据前执行的回调
-	 */
-	public abstract void preManage();
-	/**
-	 * 处理数据的回调
-	 * @param buff		缓冲数据
-	 * @param buffSize	缓冲数据长度
-	 * @throws Exception
-	 */
-	public abstract void manage(byte[] buff,int buffSize) throws Exception;
-	/**
-	 * 正常获取数据后执行的回调
-	 */
-	public abstract void endManage();
-	/**
-	 * 请求过程出错的回调
-	 * @param error
-	 */
-	public abstract void reqErr(String error);
 }

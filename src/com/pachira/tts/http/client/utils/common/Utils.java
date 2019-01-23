@@ -1,8 +1,9 @@
-package com.pachira.tts.http.client.utils;
+package com.pachira.tts.http.client.utils.common;
 
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.InputStream;
+import java.text.DecimalFormat;
 
 import javax.sound.sampled.AudioFormat;
 import javax.sound.sampled.AudioSystem;
@@ -80,5 +81,13 @@ public class Utils {
 				}
 			};
 		}.start();
+	}
+	
+	public static int getVersionVal(String version) {
+		String[] vs = version.split("\\.");
+		DecimalFormat df1 = new DecimalFormat("#");
+		DecimalFormat df2 = new DecimalFormat("00");
+		version = df1.format(Integer.parseInt(vs[0]))+df2.format(Integer.parseInt(vs[1]))+df2.format(Integer.parseInt(vs[2]));
+		return Integer.parseInt(version);
 	}
 }

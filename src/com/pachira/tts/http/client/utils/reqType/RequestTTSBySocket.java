@@ -9,29 +9,32 @@ import javax.net.ssl.SSLSocket;
 import javax.net.ssl.SSLSocketFactory;
 
 import com.pachira.tts.http.client.ReqParam;
+import com.pachira.tts.http.client.utils.ManageData;
 import com.pachira.tts.http.client.utils.RequestTTS;
-import com.pachira.tts.http.client.utils.SourceUtils;
-import com.pachira.tts.http.client.utils.Utils;
-
-public abstract class RequestTTSBySocket extends RequestTTS {
+import com.pachira.tts.http.client.utils.common.SourceUtils;
+import com.pachira.tts.http.client.utils.common.Utils;
+/**
+ * 实现使用Socket发送HTTP请求
+ */
+public class RequestTTSBySocket implements RequestTTS {
 	private String method;
-	
-	private int type = 1;
+	private ManageData manage;
+	private int version;
 	/**
 	 * Socket方式请求TTS服务
 	 * @param method	请求方式
 	 */
-	public RequestTTSBySocket(String method) {
+	public RequestTTSBySocket(int version,String method,ManageData manage) {
 		this.method = method;
+		this.manage = manage;
+		this.version = version;
 	}
 	
 	public String paramDec() {
-		System.out.println("[注]在1.2.1版本以后, 请求头中可以没有不写 Content-Type: application/x-www-form-urlencoded");
 		return ReqParam.param_form;
 	}
 	
 	public String map2Json() {
-		type = 2;
 		return ReqParam.param_json;
 	}
 	
@@ -66,9 +69,13 @@ public abstract class RequestTTSBySocket extends RequestTTS {
 			if("GET".equals(method)) {
 				paramStr = paramDec();
 			}else {
-				System.out.println("1.2.1版本以后, POST方式传递参数支持json串的形式，body体内容编码为UTF-8");
-//				paramStr = paramDec();
-				paramStr = map2Json();
+				if(version <= 10200) {
+					System.out.println("[注]在1.2.1版本以后, 请求头中可以没有不写 Content-Type: application/x-www-form-urlencoded");
+					paramStr = paramDec();
+				}else {
+					System.out.println("1.2.1版本以后, POST方式传递参数支持json串的形式，body体内容编码为UTF-8");
+					paramStr = map2Json();
+				}
 			}
 			System.out.println("==========================HTTP请求报文============================");
 			
@@ -80,7 +87,7 @@ public abstract class RequestTTSBySocket extends RequestTTS {
 			}
 			sb.append("Host: " + uri.getHost()+":"+uri.getPort() + "\r\n");
 			sb.append("Connection: Keep-Alive\r\n");
-			if(type == 1) {
+			if(version <= 10200) {
 				sb.append("Content-Type: application/x-www-form-urlencoded\r\n");
 			}
 			if("POST".equals(method)) {
@@ -99,7 +106,7 @@ public abstract class RequestTTSBySocket extends RequestTTS {
 			in = socket.getInputStream();
 			String len = readLine(in);
 			if(!len.contains("200")) {
-				reqErr("请求失败："+len);
+				manage.reqErr("请求失败："+len);
 				return;
 			}
 			System.out.println(len);
@@ -117,7 +124,7 @@ public abstract class RequestTTSBySocket extends RequestTTS {
 			// 头部解析完成，接下在开始解析chunked部分
 			if(contentType.contains("audio")) {
 				// 正常音频数据
-				preManage();
+				manage.preManage();
 				String errJson = "";
 				while(!"0".equals(len = readLine(in))){
 					if("".equals(len)) {
@@ -136,15 +143,15 @@ public abstract class RequestTTSBySocket extends RequestTTS {
 						System.out.println(errJson);
 					}else {
 						System.out.printf("<[[长度为%d的二进制数据]]>\n",dataLen);
-						manage(buff, dataLen);
+						manage.manage(buff, dataLen);
 					}
 				}
 				System.out.println(len);
 				if(!"".equals(errJson)) {
-					reqErr(errJson);
+					manage.reqErr(errJson);
 				}
 				// 流读取结束
-				endManage();
+				manage.endManage();
 			}else {
 				// 服务器返回错误信息
 				byte[] buff = new byte[contentLength];
@@ -155,7 +162,7 @@ public abstract class RequestTTSBySocket extends RequestTTS {
 				}
 				String errStr = new String(buff,"UTF-8").trim();
 				System.out.println(errStr);
-				reqErr(errStr);
+				manage.reqErr(errStr);
 			}
 		} catch (Exception ee) {
 			ee.printStackTrace();
@@ -177,26 +184,4 @@ public abstract class RequestTTSBySocket extends RequestTTS {
 		}
 		return sb.toString().trim();
 	}
-	
-	/**
-	 * 获取响应数据前执行的回调
-	 */
-	public abstract void preManage();
-	/**
-	 * 处理数据的回调
-	 * @param buff		缓冲数据
-	 * @param buffSize	缓冲数据长度
-	 * @throws Exception
-	 */
-	public abstract void manage(byte[] buff,int buffSize) throws Exception;
-	/**
-	 * 正常获取数据后执行的回调
-	 */
-	public abstract void endManage();
-	/**
-	 * 请求过程出错的回调
-	 * @param error
-	 */
-	public abstract void reqErr(String error);
-	
 }

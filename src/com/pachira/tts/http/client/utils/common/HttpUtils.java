@@ -1,4 +1,4 @@
-package com.pachira.tts.http.client.utils;
+package com.pachira.tts.http.client.utils.common;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
