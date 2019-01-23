@@ -37,8 +37,8 @@ public class Main {
 	public static void main(String[] args) throws Exception {
 		System.out.println("start");
 		init();
-		tts();
 		getVersion();
+		tts();
 		getWavNames();
 		checkName();
 		uploadWav();
@@ -176,7 +176,7 @@ public class Main {
 	
 	/*************************************************************/
 	public static String toMyRespStr(MyResp resp) {
-		return "MyResp [code=" + resp.getCode() + ", data=" + getData(resp) + ", list=" + resp.getList() + ", msg=" + resp.getMsg() + ", sn=" + resp.getSn() + "]";
+		return ("0000".equals(resp.getCode())?"请求成功：":"请求失败：")+" {code=" + resp.getCode() + ", data=" + getData(resp) + ", list=" + resp.getList() + ", msg=" + resp.getMsg() + ", sn=" + resp.getSn() + "}";
 	}
 	public static Map<String,Object> getData(MyResp resp){
 		Map<String,Object> map = new HashMap<String,Object>();
