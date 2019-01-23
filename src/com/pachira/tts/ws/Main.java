@@ -30,17 +30,17 @@ public class Main {
 		System.out.println("start");
 		init();
 		tts();
-//		getVersion();
-//		getWavNames();
-//		checkName();
-//		uploadWav();
-//		getWavNames();
-//		deleteWav("webservice测试.wav");
-//		getWavNames();
-//		uploadWavByMybyte();
-//		getWavNames();
-//		deleteWav("aaa/bbb/ccc/webservice测试.wav");
-//		getWavNames();
+		getVersion();
+		getWavNames();
+		checkName();
+		uploadWav();
+		getWavNames();
+		deleteWav("webservice测试.wav");
+		getWavNames();
+		uploadWavByMybyte();
+		getWavNames();
+		deleteWav("aaa/bbb/ccc/webservice测试.wav");
+		getWavNames();
 		System.out.println("end");
 	}
 	
