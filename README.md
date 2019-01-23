@@ -1,13 +1,13 @@
 ![image](https://raw.githubusercontent.com/wangtianbao1987/ttsClientDemo/master/pachira.png)
-# 普强TTS接口调用演示实例说明
-## HTTP
+# 普强TTS接口调用演示示例说明
+## 语音合成HTTP示例
 ### 运行入口
 * com.pachira.tts.http.client.Main
 ### 参数配置类
 * com.pachira.tts.http.client.ReqParam
 ### 使用说明
 
-系统为客户端调用普强TTS服务接口演示实例。
+系统为客户端调用普强TTS服务接口演示示例。
 
 * com.pachira.tts.http.client.Main
 
@@ -163,8 +163,16 @@ Date: Wed, 28 Nov 2018 13:33:55 GMT
 0
 ```
 
+## 人声音频Socket方式上传示例(HTTP)
+### 运行入口
+* com.pachira.tts.uploadwav.socket.Main
 
-## WebService
+## 人声音频HttpClient工具类方式上传示例(HTTP)
+### 运行入口
+* com.pachira.tts.uploadwav.httpclient.Main
+
+
+## WebService调用示例
 ### 运行入口
 * com.pachira.tts.ws.Main
 
