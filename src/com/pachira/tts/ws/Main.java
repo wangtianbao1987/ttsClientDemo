@@ -59,8 +59,8 @@ public class Main {
 		/**
 		 * com.pachira.tts.ws.client.VoiceInterface.deleteWav(String wavName, String language)
 		 * 参数说明：
-		 * 		wavName: 需要删除的人声音频
-		 * 		language： 语言包（默认为：putonghua）
+		 * 		wavName:	需要删除的人声音频
+		 * 		language：	语言包（默认为：putonghua）
 		 */
 		MyResp resp = face.deleteWav(wavName, "putonghua"); // <=> face.deleteWav(wavName, null);
 		System.out.println(toMyRespStr(resp));
@@ -109,9 +109,12 @@ public class Main {
 		int len = 0;
 		while((len = fis.read(buff)) != -1) {
 			MyByte mybyte = new MyByte();
+			// 音频数据
 			mybyte.setBuff(buff);
+			// 数据开始索引位置
 			mybyte.setStart(0);
-			mybyte.setEnd(len);
+			// 数据长度
+			mybyte.setLen(len);
 			mybytes.add(mybyte);
 		}
 		fis.close();

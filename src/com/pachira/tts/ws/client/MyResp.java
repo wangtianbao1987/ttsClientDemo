@@ -71,7 +71,7 @@ public class MyResp {
     protected String msg;
     protected String sn;
 
-	/**
+    /**
      * 获取code属性的值。
      * 
      * @return

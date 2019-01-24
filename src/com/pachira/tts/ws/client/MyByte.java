@@ -17,7 +17,7 @@ import javax.xml.bind.annotation.XmlType;
  *     &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType">
  *       &lt;sequence>
  *         &lt;element name="buff" type="{http://www.w3.org/2001/XMLSchema}base64Binary" minOccurs="0"/>
- *         &lt;element name="end" type="{http://www.w3.org/2001/XMLSchema}int"/>
+ *         &lt;element name="len" type="{http://www.w3.org/2001/XMLSchema}int"/>
  *         &lt;element name="start" type="{http://www.w3.org/2001/XMLSchema}int"/>
  *       &lt;/sequence>
  *     &lt;/restriction>
@@ -30,13 +30,13 @@ import javax.xml.bind.annotation.XmlType;
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "myByte", propOrder = {
     "buff",
-    "end",
+    "len",
     "start"
 })
 public class MyByte {
 
     protected byte[] buff;
-    protected int end;
+    protected int len;
     protected int start;
 
     /**
@@ -62,19 +62,19 @@ public class MyByte {
     }
 
     /**
-     * 获取end属性的值。
+     * 获取len属性的值。
      * 
      */
-    public int getEnd() {
-        return end;
+    public int getLen() {
+        return len;
     }
 
     /**
-     * 设置end属性的值。
+     * 设置len属性的值。
      * 
      */
-    public void setEnd(int value) {
-        this.end = value;
+    public void setLen(int value) {
+        this.len = value;
     }
 
     /**
